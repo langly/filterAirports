@@ -6,17 +6,32 @@ with open("airports.csv") as fh:
     num = 0
     reader = csv.DictReader(fh)
 
-    deny_type = ["closed"]; ## Append to this list
+    ## Types of airports to filter.
+    deny_type = ["closed", "heliport", "seaplane_base"]; ## Append to this list
 
     ## We want to filter on US-CA
     us_cali = filter(lambda x: x["iso_region"] == "US-CA"
                                 and x["type"] not in deny_type
-                                and x["ident"].startswith("K"), reader)
+                                and not x["ident"].startswith("US-")
+                                ,reader)
 
 
     ## TODO: We can minimize the fields needed for the app as well.
 
-    s = json.dumps(list(us_cali))
+    ## Create a list with just the fields we want.
+    rel_fields = ['ident', 'latitude_deg', 'longitude_deg']
+
+    compressed = []
+
+    for l in list(us_cali):
+        x = {}
+        for field in rel_fields:
+            x[field] = l[field]
+
+        compressed.append(x)
+
+    #s = json.dumps(list(us_cali))
+    s = json.dumps(compressed)
 
     print(s)
 
