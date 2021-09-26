@@ -7,7 +7,8 @@ with open("airports.csv") as fh:
     reader = csv.DictReader(fh)
 
     ## Types of airports to filter.
-    deny_type = ["closed", "heliport", "seaplane_base"]; ## Append to this list
+    ## Append to this list
+    deny_type = ["closed", "heliport", "seaplane_base", "balloonport"]; 
 
     ## We want to filter on US-CA
     us_cali = filter(lambda x: x["iso_region"] == "US-CA"
@@ -16,7 +17,6 @@ with open("airports.csv") as fh:
                                 ,reader)
 
 
-    ## TODO: We can minimize the fields needed for the app as well.
 
     ## Create a list with just the fields we want.
     rel_fields = ['ident', 'latitude_deg', 'longitude_deg']
